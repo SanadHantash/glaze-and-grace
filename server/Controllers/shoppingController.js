@@ -114,7 +114,7 @@ const createCheckoutSession = async (req, res) => {
           },
           unit_amount: Math.round(product.total_price * 100), 
         },
-        quantity: product.count,
+        quantity: product.count-(product.count-1),
       };
     });
 
