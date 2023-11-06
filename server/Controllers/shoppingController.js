@@ -132,7 +132,7 @@ const createCheckoutSession = async (req, res) => {
     console.log(totalAmount);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ success: false, error: 'Internal server error' });
+    res.status(500).json({ success: false, error: 'payment failed' });
   }
 };
 

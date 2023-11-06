@@ -82,7 +82,7 @@ Shopping.updateproduct = async (productId,userID, count) => {
 
 Shopping.getcartproducts = async (userID) => {
     try {
-        const result = await db.query('SELECT shopping_cart.id, products.product_name,  shopping_cart.count,  shopping_cart.total_price,  products.image,  categories.category  FROM shopping_cart INNER JOIN products ON products.id = shopping_cart.product_id INNER JOIN categories ON categories.id = products.category_id WHERE shopping_cart.user_id = $1 and is_deleted = false;',[userID]);
+        const result = await db.query('SELECT shopping_cart.id, products.product_name, shopping_cart.count, shopping_cart.total_price, products.image, categories.category FROM shopping_cart INNER JOIN products ON products.id = shopping_cart.product_id  INNER JOIN categories ON categories.id = products.category_id WHERE shopping_cart.user_id = $1 AND shopping_cart.is_deleted = false;',[userID]);
         return result.rows;
     } catch (error) {
         console.error(error);

@@ -15,7 +15,7 @@ Reaction.addrate = async (productId, userID, rate) => {
         const insertedRatingValue = insertrating.rows[0].rate;
 
         const result = await db.query(
-            'UPDATE products SET rate= (SELECT AVG(rating) FROM reaction WHERE product_id = $1) WHERE id = $1 RETURNING *',
+            'UPDATE products SET rate= (SELECT AVG(rate) FROM reaction WHERE product_id = $1) WHERE id = $1 RETURNING *',
             [productId]
         );
 
@@ -26,24 +26,25 @@ Reaction.addrate = async (productId, userID, rate) => {
     }
 };
 
-Reaction.addcomment = async(productId, userID, comment) => {
-    try{
-        const result = db.query('insert into reaction (rate, user_id,product_id) values ($1,$2,$3);'[comment, userID, productId]);
+
+Reaction.addcomment = async (productId, userID, comment) => {
+    try {
+        const result = await db.query('INSERT INTO reaction (comment, user_id, product_id) VALUES ($1, $2, $3)', [comment, userID, productId]);
         return result;
-    } catch(error){
+    } catch (error) {
         console.error(error);
         throw error;
     }
-}
+};
 
-Reaction.getcomments = async(productId) => {
-    try{
-        const result = db.query('select reaction.comment,users.username from reaction inner join users on users.id = reaction.user_id;'[productId]);
+Reaction.getcomments = async (productId) => {
+    try {
+        const result = await db.query('SELECT reaction.comment, users.username FROM reaction INNER JOIN users ON users.id = reaction.user_id WHERE product_id = $1 AND reaction.comment IS NOT NULL', [productId]);
         return result;
-    } catch(error){
+    } catch (error) {
         console.error(error);
         throw error;
     }
-}
+};
 
-module.exports = Reaction
+module.exports = Reaction;
